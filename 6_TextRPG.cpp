@@ -38,10 +38,44 @@ enum BATTLE
   BATTLE_BACK
 };
 
+enum ITEM_TYPE
+{
+  IT_NONE,
+  IT_WEAPON,
+  IT_ARMOR,
+  IT_BACK 
+};
+
+enum STORE_MENU
+{
+  SM_NONE,
+  SM_WEAPON,
+  SM_ARMOR,
+  SM_BACK
+};
+
 #define NAME_SIZE 32
+#define ITEM_DESC_LENGTH 512
+#define INVENTORY_MAX 20
+#define STORE_WEAPON_MAX  3
+#define STORE_ARMOR_MAX 3
+
+struct _tagItem
+{
+  char strName[NAME_SIZE];
+  char strTypeName[NAME_SIZE];
+  ITEM_TYPE eType;
+  int iMin;
+  int iMax;
+  int iPrice;
+  int iSell;
+  char strDesc[ITEM_DESC_LENGTH];
+};
 
 struct _tagInventory 
 {
+  _tagItem tItem[INVENTORY_MAX];
+  int iItemCount;
   int iGold;
 };
 
@@ -65,7 +99,7 @@ struct _tagPlayer
   _tagInventory tIventory;
 };
 
-// ============================================ 몬스터 구조체 ============================================
+// ============================================= 몬스터 구조체 =============================================
 
 struct _tagMonster 
 {
@@ -84,7 +118,7 @@ struct _tagMonster
   int iGoldMax;
 };
 
-// ============================================ MAIN 문 ============================================
+// =============================================== MAIN 문 ===============================================
 
 int main() 
 {
@@ -123,7 +157,7 @@ int main()
   tPlayer.eJob = (JOB)iJob;
   tPlayer.tIventory.iGold = 10000;
 
-  // ============================================ 직업별 능력치 ============================================
+  // ============================================= 직업별 능력치 =============================================
 
   switch (tPlayer.eJob)
   {
@@ -171,7 +205,7 @@ int main()
 
   }
 
-  // ============================================ 몬스터를 생성 ============================================
+  // ============================================= 몬스터를 생성 =============================================
 
   _tagMonster tMonsterArr[MT_BACK - 1] = {};
 
@@ -196,7 +230,7 @@ int main()
   strcpy(tMonsterArr[1].strName, "트롤");
   tMonsterArr[1].iAttackMin = 80;
   tMonsterArr[1].iAttackMax = 130;
-  tMonsterArr[1].iArmorMin = 60;
+  tMonsterArr[1].iArmorMin = 60; 
   tMonsterArr[1].iArmorMax = 90;
   tMonsterArr[1].iHP = 2000;
   tMonsterArr[1].iHPMax = 2000;
@@ -223,8 +257,16 @@ int main()
   tMonsterArr[2].iGoldMin = 20000;
   tMonsterArr[2].iGoldMax = 50000;
 
+  // 상점에서 판매할 아이템 목록을 생성한다.
 
-  // ============================================ 로비 ============================================
+  _tagItem tStoreWeapon[STORE_WEAPON_MAX] = {};
+  _tagItem tStoreArmor[STORE_ARMOR_MAX] = {};
+
+  // 각 아이템 정보들을 설정해준다.
+
+
+
+  // =============================================== 로비 ===============================================
 
   while (true)
   {
@@ -415,6 +457,43 @@ int main()
       // ============================================ 상점 ============================================
 
       case MM_STORE:
+        while (true)
+        {
+          system("clear");
+          cout << "============================ 상점 ============================" << endl;
+          cout << "1. 무기상점" << endl;
+          cout << "2. 방어구상점" << endl;
+          cout << "3. 뒤로가기" << endl;
+          cout << "상점을 선택하세요." << endl;
+          cin >> iMenu;
+
+          if (cin.fail())
+          {
+            cin.clear();
+            cin.ignore(1024, '\n');
+            continue;
+          }
+
+          else if (iMenu == SM_BACK) break;
+
+          // ========================================= 판매 목록 =========================================
+          switch (iMenu)
+          {
+            case SM_WEAPON:
+              while (true)
+              {
+                system("clear");
+
+                cout << "============================ 무기 상점 ============================" << endl;
+                // 판매 목록을 보여준다.
+
+              }
+              break;
+            case SM_ARMOR:
+              break;
+          }
+
+        }
         break;
 
       // ============================================ 가방 ============================================
