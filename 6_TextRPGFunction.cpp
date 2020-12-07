@@ -10,7 +10,22 @@ enum MAIN_MENU
   MM_MAP,
   MM_STORE,
   MM_INVENROTY,
-  MM_EXIT  
+  MM_EXIT
+};
+
+enum BATTLE
+{
+  BATTLE_NONE,
+  BATTLE_ATTACK,
+  BATTLE_BACK
+};
+
+enum ITEM_TYPE
+{
+  IT_NONE,
+  IT_WEAPON,
+  IT_ARMOR,
+  IT_BACK 
 };
 
 enum MAP_TYPE
@@ -21,6 +36,70 @@ enum MAP_TYPE
   MT_HARD,
   MT_BACK
 }; 
+
+enum JOB
+{
+  JOB_NONE,
+  JOB_KNIGHT,
+  JOB_ARCHER,
+  JOB_WIZARD,
+  JOB_END // END 를 추가한 이유는 ? 향후 직업을 추가하면 값이 밀리는것을 방지하기 위해서 따로 코드 수정을 해줄 수고를 덜어줌
+};
+
+enum EQUIP
+{
+  EQ_WEAPON,
+	EQ_ARMOR,
+	EQ_MAX
+};
+
+#define NAME_SIZE 32
+#define ITEM_DESC_LENGTH 512
+#define INVENTORY_MAX 20
+#define STORE_WEAPON_MAX  3
+#define STORE_ARMOR_MAX 3
+#define	LEVEL_MAX 10
+
+struct _tagItem
+{
+  char strName[NAME_SIZE];
+  char strTypeName[NAME_SIZE];
+  ITEM_TYPE eType;
+  int iMin;
+  int iMax;
+  int iPrice;
+  int iSell;
+  char strDesc[ITEM_DESC_LENGTH];
+};
+
+struct _tagInventory 
+{
+  _tagItem tItem[INVENTORY_MAX];
+  int iItemCount;
+  int iGold;
+};
+
+// ============================================ 플레이어 구조체 ============================================
+
+struct _tagPlayer  
+{
+  char strName[NAME_SIZE];
+  char strJobName[NAME_SIZE];
+  JOB eJob;
+  int iAttackMin;
+  int iAttackMax;
+  int iArmorMin;
+  int iArmorMax;
+  int iHP;
+  int iHPMax;
+  int iMP;
+  int iMPMax;
+  int iExp;
+  int iLevel;
+  _tagItem	tEquip[EQ_MAX];
+	bool		bEquip[EQ_MAX];
+	_tagInventory	tInventory;
+};
 
 
 int OutputMainMenu();
@@ -121,6 +200,9 @@ void RunMap()
         break;
       case MT_HARD:
         cout << "============================ 어려움 ============================" << endl;
+        break;
+      case MT_BACK:
+        bLoop = false;
         break;
     }
   }
